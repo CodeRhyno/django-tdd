@@ -1,11 +1,13 @@
 from django.test import TestCase
 from lists.models import Item, List
 
+
 class HomePageTest(TestCase):
 
     def test_uses_home_template(self):
         response = self.client.get('/')
         self.assertTemplateUsed(response, 'home.html')
+
 
 class ListAndItemModelsTest(TestCase):
 
@@ -36,6 +38,7 @@ class ListAndItemModelsTest(TestCase):
         self.assertEqual(second_saved_item.text, second_item.text)
         self.assertEqual(second_saved_item.list, list_)
 
+
 class LiveViewTest(TestCase):
 
     def test_user_list_template(self):
@@ -59,6 +62,7 @@ class LiveViewTest(TestCase):
         self.assertNotContains(response, 'other list item 1')
         self.assertNotContains(response, 'other list item 2')
 
+
 class NewListTest(TestCase):
 
     def test_can_save_a_POST_request(self):
@@ -68,9 +72,11 @@ class NewListTest(TestCase):
         self.assertEqual(new_item.text, 'A new list item')
 
     def test_redirect_after_POST(self):
-        response = self.client.post('/lists/new', data={'item_text': 'A new list item'})
+        response = self.client.post(
+            '/lists/new', data={'item_text': 'A new list item'})
         new_list = List.objects.first()
         self.assertRedirects(response, f'/lists/{new_list.id}/')
+
 
 class NewItemTest(TestCase):
 
